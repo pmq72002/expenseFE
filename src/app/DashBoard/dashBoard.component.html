@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="card mt-4">
+    <h3>Phân bổ chi tiêu</h3>
+
+    <canvas baseChart
+            [data]="pieChartData"
+            [type]="pieChartType">
+    </canvas>
+  </div>
+  <!-- Tổng tiền -->
+  <div class="card total-card">
+    <h2>Tổng còn lại</h2>
+    <p class="money">{{ totalRemaining | number }} đ</p>
+
+    <div class="progress">
+      <div
+        class="progress-bar total"
+        [style.width.%]="getTotalPercent()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Category list -->
+  <div class="category-list">
+
+    <div *ngFor="let c of categories" class="card category-card">
+
+      <div>
+        <p class="name">{{ c.name }}</p>
+        <p class="sub">
+          {{ c.spent | number }} / {{ c.limit | number }} đ
+        </p>
+      </div>
+
+      <div class="progress small">
+        <div
+          class="progress-bar"
+          [ngClass]="getColor(c)"
+          [style.width.%]="getPercent(c)">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Floating button -->
+  <button class="fab" (click)="addExpense()">+</button>
+
+</div>
