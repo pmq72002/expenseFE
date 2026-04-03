@@ -1,45 +1,62 @@
-<div class="container">
-  <div class="card mt-4">
-    <h3>Phân bổ chi tiêu</h3>
+<div class="container desktop">
 
-    <canvas baseChart
-            [data]="pieChartData"
-            [type]="pieChartType">
-    </canvas>
-  </div>
-  <!-- Tổng tiền -->
-  <div class="card total-card">
-    <h2>Tổng còn lại</h2>
-    <p class="money">{{ totalRemaining | number }} đ</p>
+  <div class="dashboard-grid">
 
-    <div class="progress">
-      <div
-        class="progress-bar total"
-        [style.width.%]="getTotalPercent()">
-      </div>
-    </div>
-  </div>
+    <!-- Bên trái: Tổng còn lại + Chart -->
+    <div class="left-panel">
 
-  <!-- Category list -->
-  <div class="category-list">
+      <!-- Tổng còn lại -->
+      <div class="card total-card">
+        <h2>Tổng còn lại</h2>
+        <p class="money">{{ totalRemaining | number }} đ</p>
 
-    <div *ngFor="let c of categories" class="card category-card">
-
-      <div>
-        <p class="name">{{ c.name }}</p>
-        <p class="sub">
-          {{ c.spent | number }} / {{ c.limit | number }} đ
-        </p>
-      </div>
-
-      <div class="progress small">
-        <div
-          class="progress-bar"
-          [ngClass]="getColor(c)"
-          [style.width.%]="getPercent(c)">
+        <div class="progress">
+          <div class="progress-bar total" [style.width.%]="getTotalPercent()"></div>
         </div>
       </div>
 
+      <!-- Phân bổ chi tiêu + Chart + Legend -->
+      <div class="card chart-card">
+        <h3>Phân bổ chi tiêu</h3>
+
+        <div class="chart-wrapper">
+          <canvas baseChart
+                  [data]="pieChartData"
+                  type="doughnut"
+                  [options]="pieChartOptions"
+                  [plugins]="pieChartPlugins">
+          </canvas>
+        </div>
+
+        <!-- Legend 2 cột -->
+        <div class="chart-legend">
+          <div *ngFor="let c of categories" class="legend-item">
+            <span class="color-box" [style.background]="getColorBox(c)"></span>
+            {{ c.name }} {{ getPercent(c) | number:'1.0-1' }}%
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bên phải: Category list -->
+    <div class="right-panel category-list">
+      <div *ngFor="let c of categories" class="card category-card">
+        <div>
+          <p class="name">{{ c.name }}</p>
+          <p class="sub">
+            {{ c.spent | number }} / {{ c.limit | number }} đ
+          </p>
+        </div>
+
+        <div class="progress small">
+          <div
+            class="progress-bar"
+            [ngClass]="getColor(c)"
+            [style.width.%]="getPercent(c)">
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
