@@ -8,8 +8,8 @@
       <!-- Tổng còn lại -->
       <div class="card total-card">
         <h2>Tổng còn lại</h2>
-        <p class="money">{{ totalRemaining | number }} đ</p>
-
+        <h3>Tháng {{currentMonth}}</h3>
+        <p class="money">{{ totalIncome | number }} đ</p>
         <div class="progress">
           <div class="progress-bar total" [style.width.%]="getTotalPercent()"></div>
         </div>
@@ -45,7 +45,7 @@
         <div>
           <p class="name">{{ c.name }}</p>
           <p class="sub">
-            {{ c.spent | number }} / {{ c.limit | number }} đ
+            {{ getAmount(c.id) | number }} / {{ getMaxAmount(c.id) | number }} đ
           </p>
         </div>
 
