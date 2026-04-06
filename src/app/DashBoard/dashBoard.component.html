@@ -7,11 +7,22 @@
 
       <!-- Tổng còn lại -->
       <div class="card total-card">
-        <h2>Tổng còn lại</h2>
-        <h3>Tháng {{currentMonth}}</h3>
-        <p class="money">{{ totalIncome | number }} đ</p>
-        <div class="progress">
-          <div class="progress-bar total" [style.width.%]="getTotalPercent()"></div>
+        <h2>Tháng {{currentMonth}}</h2>
+        <h3>
+          Còn lại
+          <span [ngClass]="getTotalTextColor()">
+                {{ (totalIncome - getTotalSpent()) | number }}
+          </span>
+        </h3>
+        <p class="money">
+          {{ getTotalSpent() | number }} / {{ totalIncome | number }}
+        </p>
+        <div class="progress small">
+          <div
+            class="progress-bar"
+            [ngClass]="getTotalColor()"
+            [style.width.%]="getTotalPercent()">
+          </div>
         </div>
       </div>
 

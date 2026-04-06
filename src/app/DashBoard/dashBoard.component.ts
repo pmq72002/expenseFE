@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import { ChartData, ChartOptions, ChartType} from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {ApiService} from "../services/api.service";
-import {colors} from "@angular/cli/utilities/color";
 
 interface Category {
   id: number;
@@ -149,6 +148,22 @@ export class DashboardComponent implements OnInit{
     if (percent < 50) return 'bg-green';
     if (percent < 80) return 'bg-yellow';
     return 'bg-red';
+  }
+
+  getTotalColor(): string {
+    const percent = this.getTotalPercent();
+
+    if (percent < 50) return 'bg-green';
+    if (percent < 80) return 'bg-yellow';
+    return 'bg-red';
+  }
+
+  getTotalTextColor(): string {
+    const percent = this.getTotalPercent();
+
+    if (percent < 50) return 'text-green';
+    if (percent < 80) return 'text-yellow';
+    return 'text-red';
   }
 
   getBackgroundColors(count: number): string[] {

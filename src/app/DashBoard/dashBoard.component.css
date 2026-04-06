@@ -58,6 +58,10 @@
 .progress.small .progress-bar.bg-green { background-color: #22c55e; }
 .progress.small .progress-bar.bg-yellow { background-color: #facc15; }
 .progress.small .progress-bar.bg-red { background-color: #ef4444; }
+/* Màu theo % cho text */
+.text-green { color: #22c55e; }
+.text-yellow { color: #facc15; }
+.text-red { color: #ef4444; }
 
 /* ==== Chart ==== */
 .chart-card {
