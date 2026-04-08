@@ -1,0 +1,62 @@
+.budget-container {
+  padding: 20px;
+}
+
+/* Floating button */
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 24px;
+  border: none;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+/* Form */
+.form-card {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* Date */
+.date-picker {
+  margin-bottom: 15px;
+}
+
+/* Table */
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.expense-table th,
+.expense-table td {
+  border: 1px solid #eee;
+  padding: 10px;
+  text-align: center;
+}
+
+input, select {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+/* Actions */
+.actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.save {
+  background: #2196F3;
+  color: white;
+}

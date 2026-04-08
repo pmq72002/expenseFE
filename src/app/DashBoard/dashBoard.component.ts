@@ -2,24 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import { ChartData, ChartOptions, ChartType} from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {ApiService} from "../services/api.service";
+import {Router} from "@angular/router";
+import {Category} from "../model/category.model";
+import {Budget} from "../model/budget.model";
+import {Activity} from "../model/activity.model";
 
-interface Category {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface Budget {
-  category_id : number;
-  month: string;
-  max_amount: number;
-}
-
-interface Activity {
-  category_id : number;
-  amount: number;
-  created_at: string;
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +24,8 @@ export class DashboardComponent implements OnInit{
   currentMonth: string = '';
   activities: Activity[] = [];
   constructor(
-    private api: ApiService
+    private api: ApiService,
+    private router: Router
   ) {
   }
   ngOnInit() {
@@ -103,7 +91,7 @@ export class DashboardComponent implements OnInit{
     return this.activities
       .filter(a => {
         const d = new Date(a.created_at);
-        return a.category_id === categoryId &&
+        return a.category?.id === categoryId &&
           d.getMonth() === now.getMonth() &&
           d.getFullYear() === now.getFullYear();
       })
@@ -184,10 +172,6 @@ export class DashboardComponent implements OnInit{
     return colors[index];
   }
 
-  addExpense() {
-    alert('Đi tới màn hình thêm chi tiêu');
-  }
-
   pieChartData: ChartData<'doughnut'> = {
     labels: this.categories.map(c => c.name),
     datasets: [
@@ -246,5 +230,9 @@ export class DashboardComponent implements OnInit{
         }
       ]
     };
+  }
+
+  addExpense() {
+    this.router.navigate(['/budget']);
   }
 }

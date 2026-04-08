@@ -25,4 +25,12 @@ export class ApiService {
   getActivity() {
     return this.http.get<any[]>(`${this.baseUrl}/activity`);
   }
+
+  saveActivities(payload: { categoryId: number; amount: number; date: string }[]) {
+    return this.http.post<any[]>(`${this.baseUrl}/activity`, payload);
+  }
+
+  getActivities() {
+    return this.http.get<any[]>(`${this.baseUrl}/activities`);
+  }
 }

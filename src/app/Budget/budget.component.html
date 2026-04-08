@@ -1,0 +1,61 @@
+<div class="budget-container">
+
+  <!-- Nút + -->
+  <button class="fab" (click)="openForm()">+</button>
+
+  <!-- Form -->
+  <div *ngIf="showForm" class="form-card">
+
+    <!-- Chọn ngày -->
+    <div class="date-picker">
+      <label>Ngày:</label>
+      <input type="date"
+             [(ngModel)]="selectedDate"
+             (change)="onDateChange()">
+    </div>
+
+    <!-- Table -->
+    <table class="expense-table">
+      <thead>
+      <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let row of rows; let i = index">
+        <td>
+          <select [(ngModel)]="row.categoryId">
+            <option *ngFor="let c of categories" [value]="c.id">
+              {{ c.name }}
+            </option>
+          </select>
+        </td>
+
+        <td>
+          <input type="number" [(ngModel)]="row.amount">
+        </td>
+
+        <td>
+          <input type="text" [(ngModel)]="row.description">
+        </td>
+
+        <td>
+          <button (click)="deleteRow(i)">❌</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button (click)="addRow()">+ Thêm dòng</button>
+      <button class="save" (click)="save()">Lưu</button>
+    </div>
+
+  </div>
+
+</div>
