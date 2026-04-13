@@ -33,4 +33,8 @@ export class ApiService {
   getActivities() {
     return this.http.get<any[]>(`${this.baseUrl}/activities`);
   }
+
+  getActivitiesByDate() {
+    return this.http.get<any[]>(`${this.baseUrl}/group-by-date`);
+  }
 }

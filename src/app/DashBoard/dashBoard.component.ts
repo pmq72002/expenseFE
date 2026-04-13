@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit{
   incomeList: any[] = [];
   currentMonth: string = '';
   activities: Activity[] = [];
+
   constructor(
     private api: ApiService,
     private router: Router
@@ -90,7 +91,7 @@ export class DashboardComponent implements OnInit{
 
     return this.activities
       .filter(a => {
-        const d = new Date(a.created_at);
+        const d = new Date(a.createdAt);
         return a.category?.id === categoryId &&
           d.getMonth() === now.getMonth() &&
           d.getFullYear() === now.getFullYear();
@@ -234,5 +235,9 @@ export class DashboardComponent implements OnInit{
 
   addExpense() {
     this.router.navigate(['/budget']);
+  }
+
+  goToActivity() {
+    this.router.navigate(['/activity']);
   }
 }

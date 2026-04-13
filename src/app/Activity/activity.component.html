@@ -1,0 +1,59 @@
+<div class="activity-page">
+
+  <h2>Lịch sử chi tiêu</h2>
+
+  <div *ngFor="let group of groupedActivities" class="activity-group">
+
+    <div class="group-header">
+      <h3 class="group-date">{{ formatDate(group.date) }}</h3>
+      <button class="edit-btn" (click)="toggleEdit(group)">
+        {{ group.editing ? '✕ Hủy' : '✏️ Sửa' }}
+      </button>
+    </div>
+
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th *ngIf="group.editing"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of group.rows; let i = index">
+          <td>
+            <select [(ngModel)]="row.categoryId" [disabled]="!group.editing">
+              <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+            </select>
+          </td>
+          <td>
+            <span *ngIf="!group.editing">{{ row.amount | number }}</span>
+            <input *ngIf="group.editing" type="text"
+                   [value]="formatAmount(row.amount)"
+                   (focus)="onAmountFocus($event, row)"
+                   (blur)="onAmountBlur($event, row)"
+                   (input)="onAmountInput($event, row)">
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="row.description" [readonly]="!group.editing">
+          </td>
+          <td *ngIf="group.editing">
+            <button class="del-btn" (click)="deleteRow(group, i)">❌</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="actions" *ngIf="group.editing">
+      <button (click)="addRow(group)">+ Thêm dòng</button>
+      <button class="save" (click)="saveGroup(group)">Lưu</button>
+    </div>
+
+  </div>
+
+  <div *ngIf="groupedActivities.length === 0" class="empty-msg">
+    Chưa có chi tiêu nào.
+  </div>
+
+</div>

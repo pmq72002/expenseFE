@@ -11,18 +11,21 @@ import {RouterModule, Routes} from "@angular/router";
 import {BudgetComponent} from "./Budget/budget.component";
 import {FormsModule} from "@angular/forms";
 import {AppComponent} from "./app.component";
+import {ActivityComponent} from "./Activity/activity.component";
 
 registerLocaleData(localeVi);
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
-  { path: 'budget', component: BudgetComponent }
+  { path: 'budget', component: BudgetComponent },
+  { path: 'activity', component: ActivityComponent }
 ];
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    BudgetComponent
+    BudgetComponent,
+    ActivityComponent
   ],
   imports: [
     BrowserModule,

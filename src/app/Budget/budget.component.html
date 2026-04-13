@@ -36,7 +36,11 @@
         </td>
 
         <td>
-          <input type="number" [(ngModel)]="row.amount">
+          <input type="text"
+                 [value]="formatAmount(row.amount)"
+                 (focus)="onAmountFocus($event, row)"
+                 (blur)="onAmountBlur($event, row)"
+                 (input)="onAmountInput($event, row)">
         </td>
 
         <td>

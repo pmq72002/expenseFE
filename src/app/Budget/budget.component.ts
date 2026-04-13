@@ -89,7 +89,7 @@ export class BudgetComponent implements OnInit{
           categoryId: a.category.id,
           amount: a.amount,
           description: a.description,
-          date: a.created_at.split('T')[0]
+          date: a.createdAt.split('T')[0]
         }))
         .filter(r => r.date === today); // 👈 lọc theo ngày
 
@@ -99,5 +99,36 @@ export class BudgetComponent implements OnInit{
 
   onDateChange() {
     this.getActivities();
+  }
+
+  formatAmount(value: number): string {
+    if (!value) return '';
+    return value.toLocaleString('vi-VN');
+  }
+
+  onAmountFocus(event: Event, row: ExpenseRow) {
+    const input = event.target as HTMLInputElement;
+    input.value = row.amount ? String(row.amount) : '';
+  }
+
+  onAmountBlur(event: Event, row: ExpenseRow) {
+    const input = event.target as HTMLInputElement;
+    const num = parseInt(input.value.replace(/\D/g, ''), 10) || 0;
+    row.amount = num;
+    input.value = this.formatAmount(num);
+  }
+
+  onAmountInput(event: Event, row: ExpenseRow) {
+    const input = event.target as HTMLInputElement;
+    const raw = input.value.replace(/\D/g, '');
+    const num = parseInt(raw, 10) || 0;
+    row.amount = num;
+    if (raw) {
+      const pos = input.selectionStart || 0;
+      const oldLen = input.value.length;
+      input.value = num.toLocaleString('vi-VN');
+      const newLen = input.value.length;
+      input.setSelectionRange(pos + newLen - oldLen, pos + newLen - oldLen);
+    }
   }
 }
