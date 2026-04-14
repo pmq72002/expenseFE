@@ -37,4 +37,8 @@ export class ApiService {
   getActivitiesByDate() {
     return this.http.get<any[]>(`${this.baseUrl}/group-by-date`);
   }
+
+  deleteActivity(id: number) {
+    return this.http.delete(`${this.baseUrl}/activity/${id}`);
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { Category } from '../model/category.model';
 import { ExpenseRow } from '../model/expense.model';
@@ -7,6 +8,7 @@ interface ActivityGroup {
   date: string;
   rows: ExpenseRow[];
   editing: boolean;
+  deletedIds: number[];
 }
 
 @Component({
@@ -35,6 +37,7 @@ export class ActivityComponent implements OnInit {
         .map(date => ({
           date,
           editing: false,
+          deletedIds: [],
           rows: data[date].map((a: any) => ({
             id: a.id,
             categoryId: a.category.id,
@@ -102,22 +105,34 @@ export class ActivityComponent implements OnInit {
   }
 
   deleteRow(group: ActivityGroup, i: number) {
+    const row = group.rows[i];
+    if (row.id) {
+      group.deletedIds.push(row.id);
+    }
     group.rows.splice(i, 1);
   }
 
   saveGroup(group: ActivityGroup) {
-    const payload = group.rows.map(r => ({
-      id: r.id,
-      categoryId: r.categoryId,
-      amount: r.amount,
-      date: group.date,
-      description: r.description
-    }));
+    const deletes$ = group.deletedIds.length > 0
+      ? forkJoin(...group.deletedIds.map(id => this.api.deleteActivity(id)))
+      : of(null);
 
-    this.api.saveActivities(payload).subscribe({
+    deletes$.subscribe({
       next: () => {
-        alert('Lưu thành công ngày ' + group.date);
-        this.loadGrouped();
+        const payload = group.rows.map(r => ({
+          id: r.id,
+          categoryId: r.categoryId,
+          amount: r.amount,
+          date: group.date,
+          description: r.description
+        }));
+
+        this.api.saveActivities(payload).subscribe({
+          next: () => {
+            alert('Lưu thành công ngày ' + group.date);
+            this.loadGrouped();
+          }
+        });
       }
     });
   }
