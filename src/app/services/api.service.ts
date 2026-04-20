@@ -41,4 +41,20 @@ export class ApiService {
   deleteActivity(id: number) {
     return this.http.delete(`${this.baseUrl}/activity/${id}`);
   }
+
+  getTopDay() {
+    return this.http.get<any[]>(`${this.baseUrl}/top-day`)
+  }
+
+  getTopCategory() {
+    return this.http.get<any[]>(`${this.baseUrl}/top-category`)
+  }
+
+  getTopDayList() {
+  return this.http.get<any[]>(`${this.baseUrl}/top-day-list`)
+  }
+
+  getTopCategoryList() {
+    return this.http.get<any[]>(`${this.baseUrl}/top-category-list`)
+  }
 }

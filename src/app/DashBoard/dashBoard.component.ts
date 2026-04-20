@@ -240,4 +240,8 @@ export class DashboardComponent implements OnInit{
   goToActivity() {
     this.router.navigate(['/activity']);
   }
+
+  goToStatistic() {
+    this.router.navigate(['/statistic'])
+  }
 }

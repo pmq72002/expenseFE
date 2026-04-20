@@ -1,0 +1,108 @@
+.stat-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Card chung */
+.stat-card {
+  width: 280px; /* 👈 fix size */
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+/* Icon */
+.stat-card .icon {
+  font-size: 36px;
+}
+
+/* Content */
+.stat-card .title {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.stat-card h2 {
+  margin: 4px 0;
+  font-size: 22px;
+}
+
+.stat-card .amount {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Màu riêng */
+.top-day {
+  background: linear-gradient(135deg, #7d30ec, #b41dc5);
+}
+
+.top-category {
+  background: linear-gradient(135deg, #0aef42, #19bca8);
+}
+
+.dropdown {
+  width: 280px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  margin-top: -10px;
+  padding: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+}
+
+.dropdown-item:hover {
+  background: var(--border);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* 🔥 highlight top 1 */
+.dropdown-item.top1 {
+  font-weight: bold;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}

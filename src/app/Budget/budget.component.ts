@@ -39,14 +39,6 @@ export class BudgetComponent implements OnInit{
     });
   }
 
-  openForm() {
-    this.showForm = true;
-
-    if (this.rows.length === 0) {
-      this.addRow();
-    }
-  }
-
   addRow() {
     if (this.categories.length === 0) return;
 

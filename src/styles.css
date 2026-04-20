@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===== LIGHT ===== */
+:root {
+  --bg: #f9fafb;
+  --card-bg: #ffffff;
+  --text: #111827;
+  --sub-text: #6b7280;
+  --border: #e5e7eb;
+  --input-bg: #ffffff;
+}
+
+/* ===== DARK ===== */
+.dark-theme {
+  --bg: #111827;
+  --card-bg: #1f2933;
+  --text: #f9fafb;
+  --sub-text: #9ca3af;
+  --border: #374151;
+  --input-bg: #374151;
+}
+
+/* apply global */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+}

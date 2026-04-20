@@ -1,0 +1,45 @@
+<div class="stat-container">
+
+  <!-- Top Day -->
+  <div class="card-wrapper">
+    <div class="stat-card top-day" *ngIf="topDay" (click)="toggleDayList()">
+      <div class="icon">💸</div>
+      <div class="content">
+        <p class="title">Most expense day</p>
+        <h2>{{ topDay.date | date:'dd/MM/yyyy' }}</h2>
+        <p class="amount">{{ topDay.total | number }} đ</p>
+      </div>
+    </div>
+
+    <div class="dropdown" *ngIf="showDayList">
+      <div *ngFor="let d of topDayList; let i = index"
+           class="dropdown-item"
+           [class.top1]="i === 0">
+        <span>{{ d.date | date:'dd/MM' }}</span>
+        <span>{{ d.total | number }} đ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Category -->
+  <div class="card-wrapper">
+    <div class="stat-card top-category" *ngIf="topCategory" (click)="toggleCategoryList()">
+      <div class="icon">🔥</div>
+      <div class="content">
+        <p class="title">Most expense category</p>
+        <h2>{{ topCategory.name }}</h2>
+        <p class="amount">{{ topCategory.total | number }} đ</p>
+      </div>
+    </div>
+
+    <div class="dropdown" *ngIf="showCategoryList">
+      <div *ngFor="let c of topCategoryList; let i = index"
+           class="dropdown-item"
+           [class.top1]="i === 0">
+        <span>{{ c.name }}</span>
+        <span>{{ c.total | number }} đ</span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -20,9 +20,10 @@
 /* Form */
 .form-card {
   margin-top: 20px;
-  background: white;
+  background: var(--card-bg);
   padding: 15px;
   border-radius: 10px;
+  border: 1px solid var(--border);
 }
 
 /* Date */
@@ -34,19 +35,31 @@
 .expense-table {
   width: 100%;
   border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.expense-table th {
+  background: var(--border);
+  color: var(--text);
 }
 
 .expense-table th,
 .expense-table td {
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   padding: 10px;
   text-align: center;
 }
 
 input, select {
   width: 100%;
-  border: none;
+  border: 1px solid var(--border);
   outline: none;
+  background: var(--input-bg);
+  color: var(--text);
+  padding: 6px;
+  border-radius: 6px;
 }
 
 /* Actions */
@@ -58,5 +71,5 @@ input, select {
 
 .save {
   background: #2196F3;
-  color: white;
+  color: var(--text);
 }

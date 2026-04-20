@@ -38,13 +38,16 @@ export class ActivityComponent implements OnInit {
           date,
           editing: false,
           deletedIds: [],
-          rows: data[date].map((a: any) => ({
-            id: a.id,
-            categoryId: a.category.id,
-            amount: a.amount,
-            description: a.description,
-            date: a.createdAt.split('T')[0]
-          }))
+          rows: data[date]
+            .slice()
+            .sort((a: any, b: any) => a.id - b.id)
+            .map((a: any) => ({
+              id: a.id,
+              categoryId: a.category.id,
+              amount: a.amount,
+              description: a.description,
+              date: a.createdAt.split('T')[0]
+            }))
         }));
     });
   }
