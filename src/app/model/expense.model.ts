@@ -4,4 +4,5 @@ export interface ExpenseRow  {
   amount: number;
   description: string;
   date: string;
+  type: 'EXPENSE' | 'INCOME';
 }

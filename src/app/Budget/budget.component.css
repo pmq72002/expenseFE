@@ -73,3 +73,15 @@ input, select {
   background: #2196F3;
   color: var(--text);
 }
+
+.income input,
+input.income {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.expense input,
+input.expense {
+  color: #dc2626;
+  font-weight: 600;
+}

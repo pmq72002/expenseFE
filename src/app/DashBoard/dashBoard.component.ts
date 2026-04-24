@@ -93,6 +93,7 @@ export class DashboardComponent implements OnInit{
       .filter(a => {
         const d = new Date(a.createdAt);
         return a.category?.id === categoryId &&
+          a.type === 'EXPENSE' &&
           d.getMonth() === now.getMonth() &&
           d.getFullYear() === now.getFullYear();
       })
@@ -122,7 +123,19 @@ export class DashboardComponent implements OnInit{
   }
 
   getTotalSpent(): number {
-    return this.activities.reduce((sum, a) => sum + a.amount, 0);
+    return this.activities
+      .filter(a => a.type === 'EXPENSE')
+      .reduce((sum, a) => sum + a.amount, 0);
+  }
+
+  getTotalIncomeReal(): number {
+    return this.activities
+      .filter(a => a.type === 'INCOME')
+      .reduce((sum, a) => sum + a.amount, 0);
+  }
+
+  getBalance(): number {
+    return this.totalIncome + this.getTotalIncomeReal() - this.getTotalSpent();
   }
 
   getTotalPercent(): number {

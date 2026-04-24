@@ -107,3 +107,13 @@
   color: var(--text);
   padding: 32px;
 }
+
+.income {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.expense {
+  color: #ef4444;
+  font-weight: 600;
+}

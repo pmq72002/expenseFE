@@ -5,4 +5,5 @@ export interface Activity {
   amount: number;
   createdAt: string;
   category: Category;
+  type: 'EXPENSE' | 'INCOME';
 }

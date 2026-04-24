@@ -46,7 +46,8 @@ export class ActivityComponent implements OnInit {
               categoryId: a.category.id,
               amount: a.amount,
               description: a.description,
-              date: a.createdAt.split('T')[0]
+              date: a.createdAt.split('T')[0],
+              type: a.type
             }))
         }));
     });
@@ -67,7 +68,8 @@ export class ActivityComponent implements OnInit {
       categoryId: this.categories[0].id!,
       amount: 0,
       description: '',
-      date: group.date
+      date: group.date,
+      type: 'EXPENSE'
     });
   }
 
@@ -127,7 +129,8 @@ export class ActivityComponent implements OnInit {
           categoryId: r.categoryId,
           amount: r.amount,
           date: group.date,
-          description: r.description
+          description: r.description,
+          type: r.type
         }));
 
         this.api.saveActivities(payload).subscribe({

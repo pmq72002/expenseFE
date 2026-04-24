@@ -21,6 +21,7 @@
         <th>Category</th>
         <th>Amount</th>
         <th>Description</th>
+        <th>Type</th>
         <th></th>
       </tr>
       </thead>
@@ -37,6 +38,7 @@
 
         <td>
           <input type="text"
+                 [ngClass]="row.type === 'INCOME' ? 'income' : 'expense'"
                  [value]="formatAmount(row.amount)"
                  (focus)="onAmountFocus($event, row)"
                  (blur)="onAmountBlur($event, row)"
@@ -45,6 +47,13 @@
 
         <td>
           <input type="text" [(ngModel)]="row.description">
+        </td>
+
+        <td>
+          <select [(ngModel)]="row.type">
+            <option value="EXPENSE">💸 Expense</option>
+            <option value="INCOME">💰 Income</option>
+          </select>
         </td>
 
         <td>

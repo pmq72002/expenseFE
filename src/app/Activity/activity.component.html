@@ -13,35 +13,46 @@
 
     <table class="expense-table">
       <thead>
-        <tr>
-          <th>Category</th>
-          <th>Amount</th>
-          <th>Description</th>
-          <th *ngIf="group.editing"></th>
-        </tr>
+      <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th *ngIf="group.editing"></th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of group.rows; let i = index">
-          <td>
-            <select [(ngModel)]="row.categoryId" [disabled]="!group.editing">
-              <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
-            </select>
-          </td>
-          <td>
-            <span *ngIf="!group.editing">{{ row.amount | number }}</span>
-            <input *ngIf="group.editing" type="text"
-                   [value]="formatAmount(row.amount)"
-                   (focus)="onAmountFocus($event, row)"
-                   (blur)="onAmountBlur($event, row)"
-                   (input)="onAmountInput($event, row)">
-          </td>
-          <td>
-            <input type="text" [(ngModel)]="row.description" [readonly]="!group.editing">
-          </td>
-          <td *ngIf="group.editing">
-            <button class="del-btn" (click)="deleteRow(group, i)">❌</button>
-          </td>
-        </tr>
+      <tr *ngFor="let row of group.rows; let i = index">
+        <td>
+          <select [(ngModel)]="row.categoryId" [disabled]="!group.editing">
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </td>
+        <td>
+            <span *ngIf="!group.editing"
+                  [ngClass]="row.type === 'INCOME' ? 'income' : 'expense'">
+              {{ row.type === 'INCOME' ? '+' : '-' }}
+              {{ row.amount | number }}
+</span>
+          <input *ngIf="group.editing" type="text"
+                 [value]="formatAmount(row.amount)"
+                 (focus)="onAmountFocus($event, row)"
+                 (blur)="onAmountBlur($event, row)"
+                 (input)="onAmountInput($event, row)">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="row.description" [readonly]="!group.editing">
+        </td>
+        <td>
+          <select [(ngModel)]="row.type" [disabled]="!group.editing">
+            <option value="EXPENSE">💸 Expense</option>
+            <option value="INCOME">💰 Income</option>
+          </select>
+        </td>
+        <td *ngIf="group.editing">
+          <button class="del-btn" (click)="deleteRow(group, i)">❌</button>
+        </td>
+      </tr>
       </tbody>
     </table>
 

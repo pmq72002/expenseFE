@@ -46,7 +46,8 @@ export class BudgetComponent implements OnInit{
       categoryId: this.categories[0].id!,
       amount: 0,
       description: '',
-      date: this.selectedDate
+      date: this.selectedDate,
+      type: 'EXPENSE'
     });
   }
 
@@ -60,9 +61,10 @@ export class BudgetComponent implements OnInit{
       categoryId: r.categoryId,
       amount: r.amount,
       date: this.selectedDate,
-      description: r.description
+      description: r.description,
+      type: r.type
     }));
-
+    console.log(payload);
     this.api.saveActivities(payload).subscribe({
       next: () => {
         alert('Lưu thành công');
@@ -81,7 +83,8 @@ export class BudgetComponent implements OnInit{
           categoryId: a.category.id,
           amount: a.amount,
           description: a.description,
-          date: a.createdAt.split('T')[0]
+          date: a.createdAt.split('T')[0],
+          type: a.type || 'EXPENSE'
         }))
         .filter(r => r.date === today); // 👈 lọc theo ngày
 

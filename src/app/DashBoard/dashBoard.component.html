@@ -11,7 +11,7 @@
         <h3>
           Còn lại
           <span [ngClass]="getTotalTextColor()">
-                {{ (totalIncome - getTotalSpent()) | number }}
+                {{ getBalance() | number }}
           </span>
         </h3>
         <p class="money">
