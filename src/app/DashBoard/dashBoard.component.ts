@@ -93,11 +93,14 @@ export class DashboardComponent implements OnInit{
       .filter(a => {
         const d = new Date(a.createdAt);
         return a.category?.id === categoryId &&
-          a.type === 'EXPENSE' &&
           d.getMonth() === now.getMonth() &&
           d.getFullYear() === now.getFullYear();
       })
-      .reduce((sum, a) => sum + a.amount, 0);
+      .reduce((sum, a) => {
+        if (a.type === 'EXPENSE') return sum + a.amount;
+        if (a.type === 'INCOME') return sum - a.amount;
+        return sum;
+      }, 0);
   }
 
   getMaxAmount(categoryId: number): number {
