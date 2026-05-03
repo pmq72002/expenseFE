@@ -41,20 +41,45 @@ export class DashboardComponent implements OnInit{
       this.incomeList = data;
 
       const now = new Date();
-      const current = this.incomeList.find(i => {
-        const d = new Date(i.month);
-        return d.getMonth() === now.getMonth() &&
-          d.getFullYear() === now.getFullYear();
-      });
 
-      if (current) {
-        this.totalIncome = current.total_income;
+      let start: Date;
+      let end: Date;
+
+      if (now.getDate() >= 10) {
+        // 10 tháng này → 10 tháng sau
+        start = new Date(now.getFullYear(), now.getMonth(), 10);
+        end = new Date(now.getFullYear(), now.getMonth() + 1, 10);
       } else {
-        this.totalIncome = 0; // tránh undefined
+        // 10 tháng trước → 10 tháng này
+        start = new Date(now.getFullYear(), now.getMonth() - 1, 10);
+        end = new Date(now.getFullYear(), now.getMonth(), 10);
       }
 
-      this.currentMonth = `${now.getMonth() + 1}`;
+      const current = this.incomeList.find(i => {
+        const d = new Date(i.month);
+        return d >= start && d < end;
+      });
+
+      this.totalIncome = current ? current.total_income : 0;
+
+      this.currentMonth = `${start.getDate()}/${start.getMonth()+1} - ${end.getDate()}/${end.getMonth()+1}`;
     });
+  }
+
+  getDateRange() {
+    const now = new Date();
+    let start: Date;
+    let end: Date;
+
+    if (now.getDate() >= 10) {
+      start = new Date(now.getFullYear(), now.getMonth(), 10);
+      end = new Date(now.getFullYear(), now.getMonth() + 1, 10);
+    } else {
+      start = new Date(now.getFullYear(), now.getMonth() - 1, 10);
+      end = new Date(now.getFullYear(), now.getMonth(), 10);
+    }
+
+    return { start, end };
   }
 
   getCategory() {
@@ -87,14 +112,13 @@ export class DashboardComponent implements OnInit{
   }
 
   getAmount(categoryId: number): number {
-    const now = new Date();
+    const { start, end } = this.getDateRange();
 
     return this.activities
       .filter(a => {
         const d = new Date(a.createdAt);
         return a.category?.id === categoryId &&
-          d.getMonth() === now.getMonth() &&
-          d.getFullYear() === now.getFullYear();
+          d >= start && d < end;
       })
       .reduce((sum, a) => {
         if (a.type === 'EXPENSE') return sum + a.amount;
@@ -104,13 +128,13 @@ export class DashboardComponent implements OnInit{
   }
 
   getMaxAmount(categoryId: number): number {
-    const now = new Date();
+    const { start, end } = this.getDateRange();
 
     const budget = this.budgets.find(b => {
       const d = new Date(b.month);
+
       return b.category_id === categoryId &&
-        d.getMonth() === now.getMonth() &&
-        d.getFullYear() === now.getFullYear();
+        d >= start && d < end; // ✅ dùng range thay vì == ngày 10
     });
 
     return budget ? budget.max_amount : 0;
@@ -126,14 +150,24 @@ export class DashboardComponent implements OnInit{
   }
 
   getTotalSpent(): number {
+    const { start, end } = this.getDateRange();
+
     return this.activities
-      .filter(a => a.type === 'EXPENSE')
+      .filter(a => {
+        const d = new Date(a.createdAt);
+        return a.type === 'EXPENSE' && d >= start && d < end;
+      })
       .reduce((sum, a) => sum + a.amount, 0);
   }
 
   getTotalIncomeReal(): number {
+    const { start, end } = this.getDateRange();
+
     return this.activities
-      .filter(a => a.type === 'INCOME')
+      .filter(a => {
+        const d = new Date(a.createdAt);
+        return a.type === 'INCOME' && d >= start && d < end;
+      })
       .reduce((sum, a) => sum + a.amount, 0);
   }
 
