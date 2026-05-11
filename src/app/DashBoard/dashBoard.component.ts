@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { ChartData, ChartOptions, ChartType} from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {ApiService} from "../services/api.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Category} from "../model/category.model";
 import {Budget} from "../model/budget.model";
 import {Activity} from "../model/activity.model";
@@ -27,18 +27,32 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
   ngOnInit() {
     const now = new Date();
 
-    this.selectedMonth =
-      `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    this.getCategory();
-    this.getBudget();
-    this.getInCome();
-    this.getActivity();
+    this.route.queryParams.subscribe(params => {
+
+      if (params['month']) {
+
+        this.selectedMonth = params['month'];
+
+      } else {
+
+        const now = new Date();
+
+        this.selectedMonth =
+          `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      }
+
+      this.getCategory();
+      this.getBudget();
+      this.getInCome();
+      this.getActivity();
+    });
   }
 
   getInCome() {
@@ -292,10 +306,21 @@ export class DashboardComponent implements OnInit{
   }
 
   goToStatistic() {
-    this.router.navigate(['/statistic'])
+    this.router.navigate(
+      ['/statistic'],
+      { queryParams: { month: this.selectedMonth } }
+    );
   }
 
   onMonthChange() {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { month: this.selectedMonth },
+        queryParamsHandling: 'merge'
+      }
+    );
     this.getInCome();
     this.updateChart();
     this.activities = [...this.activities];

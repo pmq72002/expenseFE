@@ -42,19 +42,27 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/activity/${id}`);
   }
 
-  getTopDay() {
-    return this.http.get<any[]>(`${this.baseUrl}/top-day`)
+  getTopDay(month: string) {
+    return this.http.get<any>(
+      `${this.baseUrl}/top-day?month=${month}`
+    );
   }
 
-  getTopCategory() {
-    return this.http.get<any[]>(`${this.baseUrl}/top-category`)
+  getTopCategory(month: string) {
+    return this.http.get<any>(
+      `${this.baseUrl}/top-category?month=${month}`
+    );
   }
 
-  getTopDayList() {
-  return this.http.get<any[]>(`${this.baseUrl}/top-day-list`)
+  getTopDayList(month: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/top-day-list?month=${month}`
+    );
   }
 
-  getTopCategoryList() {
-    return this.http.get<any[]>(`${this.baseUrl}/top-category-list`)
+  getTopCategoryList(month: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/top-category-list?month=${month}`
+    );
   }
 }
