@@ -4,7 +4,13 @@
 
     <!-- Bên trái: Tổng còn lại + Chart -->
     <div class="left-panel">
-
+      <div class="month-picker">
+        <input
+          type="month"
+          [(ngModel)]="selectedMonth"
+          (change)="onMonthChange()"
+        />
+      </div>
       <!-- Tổng còn lại -->
       <div class="card total-card">
         <h2>Tháng {{currentMonth}}</h2>

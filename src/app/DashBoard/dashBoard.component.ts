@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit{
   incomeList: any[] = [];
   currentMonth: string = '';
   activities: Activity[] = [];
+  selectedMonth: string = '';
 
   constructor(
     private api: ApiService,
@@ -30,6 +31,10 @@ export class DashboardComponent implements OnInit{
   ) {
   }
   ngOnInit() {
+    const now = new Date();
+
+    this.selectedMonth =
+      `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     this.getCategory();
     this.getBudget();
     this.getInCome();
@@ -38,53 +43,43 @@ export class DashboardComponent implements OnInit{
 
   getInCome() {
     this.api.getIncome().subscribe(data => {
+
       this.incomeList = data;
 
-      const now = new Date();
+      const { start, end } = this.getDateRange();
 
-      let start: Date;
-      let end: Date;
+      const current = this.incomeList
+        .filter(i => {
+          const d = new Date(i.month);
+          return d >= start && d < end;
+        })
+        .sort((a, b) =>
+          new Date(b.month).getTime() -
+          new Date(a.month).getTime()
+        )[0];
 
-      if (now.getDate() >= 10) {
-        // 10 tháng này → 10 tháng sau
-        start = new Date(now.getFullYear(), now.getMonth(), 10);
-        end = new Date(now.getFullYear(), now.getMonth() + 1, 10);
-      } else {
-        // 10 tháng trước → 10 tháng này
-        start = new Date(now.getFullYear(), now.getMonth() - 1, 10);
-        end = new Date(now.getFullYear(), now.getMonth(), 10);
-      }
+      this.totalIncome = current
+        ? current.total_income
+        : 0;
 
-      const current = this.incomeList.find(i => {
-        const d = new Date(i.month);
-        return d >= start && d < end;
-      });
-
-      this.totalIncome = current ? current.total_income : 0;
-
-      this.currentMonth = `${start.getDate()}/${start.getMonth()+1} - ${end.getDate()}/${end.getMonth()+1}`;
+      this.currentMonth =
+        `${start.getDate()}/${start.getMonth() + 1} - ${end.getDate()}/${end.getMonth() + 1}`;
     });
   }
 
   getDateRange() {
-    const now = new Date();
-    let start: Date;
-    let end: Date;
 
-    if (now.getDate() >= 10) {
-      start = new Date(now.getFullYear(), now.getMonth(), 10);
-      end = new Date(now.getFullYear(), now.getMonth() + 1, 10);
-    } else {
-      start = new Date(now.getFullYear(), now.getMonth() - 1, 10);
-      end = new Date(now.getFullYear(), now.getMonth(), 10);
-    }
+    const [year, month] = this.selectedMonth.split('-').map(Number);
+
+    const start = new Date(year, month - 1, 10);
+    const end = new Date(year, month, 10);
 
     return { start, end };
   }
 
   getCategory() {
     this.api.getCategory().subscribe(data => {
-      this.categories = data;
+      this.categories = data.sort((a,b) => a.id - b.id);
 
       // update chart luôn
       this.pieChartData.labels = this.categories.map(c => c.name);
@@ -94,14 +89,11 @@ export class DashboardComponent implements OnInit{
   }
 
   getBudget() {
-      this.api.getBudget().subscribe(data => {
-        this.budgets = data;
+    this.api.getBudget().subscribe(data => {
+      this.budgets = data.sort((a,b) => a.category_id - b.category_id);
 
-        this.pieChartData.datasets[0].data =
-          this.budgets.map(b => b.max_amount);
-
-        this.pieChartData = { ...this.pieChartData };
-      })
+      this.updateChart(); // ✅ dùng category map thay vì budget map
+    });
   }
 
   getActivity(){
@@ -130,11 +122,19 @@ export class DashboardComponent implements OnInit{
   getMaxAmount(categoryId: number): number {
     const { start, end } = this.getDateRange();
 
+    if (categoryId === 8) {
+      const otherMax = this.budgets
+        .filter(b => {
+          const d = new Date(b.month);
+          return b.category_id !== 8 && d >= start && d < end;
+        })
+        .reduce((sum, b) => sum + b.max_amount, 0);
+      return Math.max(this.totalIncome - otherMax, 0);
+    }
+
     const budget = this.budgets.find(b => {
       const d = new Date(b.month);
-
-      return b.category_id === categoryId &&
-        d >= start && d < end; // ✅ dùng range thay vì == ngày 10
+      return b.category_id === categoryId && d >= start && d < end;
     });
 
     return budget ? budget.max_amount : 0;
@@ -288,10 +288,17 @@ export class DashboardComponent implements OnInit{
   }
 
   goToActivity() {
-    this.router.navigate(['/activity']);
+    this.router.navigate(['/activity'], { queryParams: { month: this.selectedMonth } });
   }
 
   goToStatistic() {
     this.router.navigate(['/statistic'])
   }
+
+  onMonthChange() {
+    this.getInCome();
+    this.updateChart();
+    this.activities = [...this.activities];
+  }
+
 }

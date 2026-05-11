@@ -1,6 +1,21 @@
 .container {
   padding: 32px;
   font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Month picker dark-theme aware */
+.month-picker input[type="month"] {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+  color-scheme: light dark;
 }
 
 .dashboard-grid {
@@ -113,6 +128,68 @@
 .progress-bar.bg-green { background-color: #22c55e; }
 .progress-bar.bg-yellow { background-color: #facc15; }
 .progress-bar.bg-red { background-color: #ef4444; }
+
+/* ==== Lịch sử chi tiêu ==== */
+.history-section {
+  margin-top: 28px;
+}
+
+.history-section h3 {
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.activity-group {
+  margin-bottom: 20px;
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #3b82f6;
+  margin-bottom: 8px;
+}
+
+.group-date {
+  font-weight: bold;
+  color: var(--text);
+}
+
+.group-total {
+  font-weight: bold;
+}
+
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.expense-table th,
+.expense-table td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: center;
+  color: var(--text);
+}
+
+.expense-table th {
+  background: var(--border);
+  font-weight: 600;
+}
+
+.income { color: #22c55e; font-weight: 600; }
+.expense { color: #ef4444; font-weight: 600; }
+
+.empty-msg {
+  text-align: center;
+  color: var(--sub-text);
+  padding: 24px;
+}
 
 /* ==== Floating group ==== */
 .fab-group {

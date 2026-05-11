@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { Category } from '../model/category.model';
 import { ExpenseRow } from '../model/expense.model';
@@ -20,19 +21,39 @@ export class ActivityComponent implements OnInit {
 
   categories: Category[] = [];
   groupedActivities: ActivityGroup[] = [];
+  selectedMonth: string = '';
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    const now = new Date();
+    this.selectedMonth = this.route.snapshot.queryParamMap.get('month')
+      ?? `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
     this.api.getCategory().subscribe(data => {
       this.categories = data;
       this.loadGrouped();
     });
   }
 
+  getDateRange() {
+    const [year, month] = this.selectedMonth.split('-').map(Number);
+    return {
+      start: new Date(year, month - 1, 10),
+      end: new Date(year, month, 10)
+    };
+  }
+
   loadGrouped() {
     this.api.getActivitiesByDate().subscribe((data: any) => {
+      const { start, end } = this.getDateRange();
+
       this.groupedActivities = Object.keys(data)
+        .filter(date => {
+          const [y, m, d] = date.split('-').map(Number);
+          const local = new Date(y, m - 1, d);
+          return local >= start && local < end;
+        })
         .sort((a, b) => b.localeCompare(a))
         .map(date => ({
           date,
@@ -107,6 +128,11 @@ export class ActivityComponent implements OnInit {
   formatDate(dateStr: string): string {
     const [y, m, d] = dateStr.split('-');
     return `${d}/${m}/${y}`;
+  }
+
+  formatMonth(): string {
+    const [y, m] = this.selectedMonth.split('-');
+    return `${m}/${y}`;
   }
 
   deleteRow(group: ActivityGroup, i: number) {
